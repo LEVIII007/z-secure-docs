@@ -6,8 +6,8 @@ import { prisma } from "../prisma"; // Replace with the correct path to your Pri
 // Function to generate a new API key
 export async function generateApiKey(name: string) {
   const session = await auth();
-  console.log("generating API key for user:");
-  console.log(session);
+  // console.log("generating API key for user:");
+  // console.log(session);
   if (!session?.user?.id) {
     throw new Error("User not authenticated.");
   }
@@ -19,8 +19,8 @@ export async function generateApiKey(name: string) {
       userId: session.user.id,
     },
   });
-  console.log("new key:");
-  console.log(newKey);
+  // console.log("new key:");
+  // console.log(newKey);
 return {
   id : newKey.id,
   createdAt: newKey.createdAt,
@@ -47,9 +47,9 @@ export async function getAllApiKeys() {
       createdAt: true,
     },
   });
-  console.log("getting all API keys for user:");
-  console.log("api keys:");
-  console.log(apiKeys);
+  // console.log("getting all API keys for user:");
+  // console.log("api keys:");
+  // console.log(apiKeys);
 
 
   return apiKeys;

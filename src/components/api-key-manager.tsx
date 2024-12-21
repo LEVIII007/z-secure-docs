@@ -78,9 +78,9 @@ const handleDeleteApiKey = async (id: string) => {
     }
 
     try {
-      console.log("Generating API key...")
+      // console.log("Generating API key...")
       const newKey = await generateApiKey(newKeyName)
-      console.log(newKey)
+      // console.log(newKey)
       setApiKeys([...apiKeys, { ...newKey, createdAt: newKey.createdAt.toISOString() }])
       setNewKeyName("")
       toast({
