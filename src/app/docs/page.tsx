@@ -1,3 +1,4 @@
+import { CodeBlock } from "@/components/CodeBlock"
 export default function DocsPage() {
   return (
     <div className="space-y-6">
@@ -22,13 +23,18 @@ export default function DocsPage() {
         <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Installation</h2>
         <p>Install our client library using npm:</p>
         <pre className="bg-muted p-4 rounded-lg">
-          <code>npm install @secureshield/client</code>
+            <CodeBlock
+            language="bash"
+            code={`npm install @secureshield/client`}
+            />
         </pre>
 
         <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Basic Usage</h2>
         <p>Here's a basic example of how to use SecureShield in your application:</p>
         <pre className="bg-muted p-4 rounded-lg">
-          <code>{`import { SecureShield } from '@secureshield/client';
+        <CodeBlock
+            language="typescript"
+            code={`import { SecureShield } from '@secureshield/client';
 
 const shield = new SecureShield({
   apiKey: 'your-api-key'
@@ -39,8 +45,9 @@ await shield.rateLimit({
   endpoint: '/api/users',
   limit: 100,
   window: '1h'
-});`}</code>
-        </pre>
+});`}
+          />
+</pre>
       </div>
     </div>
   )

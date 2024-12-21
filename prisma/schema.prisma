@@ -84,7 +84,10 @@ model Authenticator {
 
 
 model ApiKey {
+  id            String          @id @default(cuid())
   key       String   @unique
+  name      String
   userId    String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }

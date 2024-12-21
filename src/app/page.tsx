@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { ShieldCheck, Zap, Bot, Lock } from "lucide-react"
+import { ShieldCheck, Zap, Bot } from "lucide-react"
 import Link from "next/link"
 
 export default function Home() {
