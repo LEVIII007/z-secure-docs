@@ -4,12 +4,14 @@ export default function ApiReferencePage() {
       <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">API Reference</h1>
       <div className="space-y-4">
         <p>
-          Complete reference for all SecureShield API endpoints and client methods.
+          This page provides the complete reference for all available SecureShield API endpoints and client methods.
+          It serves as the guide for configuring and utilizing the SecureShield security suite to protect your web applications.
         </p>
 
         <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Authentication</h2>
         <p>
-          All API requests require authentication using your API key in the Authorization header:
+          All API requests require authentication using your SecureShield API key. This key should be included in the 
+          <code>Authorization</code> header as a bearer token for every request:
         </p>
         <pre className="bg-muted p-4 rounded-lg">
           <code>Authorization: Bearer your-api-key</code>
@@ -18,15 +20,19 @@ export default function ApiReferencePage() {
         <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Rate Limiting Methods</h2>
         <div className="space-y-4">
           <h3 className="text-xl font-semibold">shield.rateLimit(options)</h3>
-          <p>Configure rate limiting for specific endpoints.</p>
+          <p>Configure rate limiting for specific API endpoints to prevent abuse and ensure fair usage.</p>
+          <p>
+            This method allows you to set a limit on the number of requests that can be made to an endpoint within a defined time window.
+            You can also configure client-specific identifiers and customize actions to take when limits are exceeded.
+          </p>
           <pre className="bg-muted p-4 rounded-lg">
             <code>{`// Parameters
 {
-  endpoint: string;      // Required: API endpoint to protect
-  limit: number;        // Required: Request limit
-  window: string;       // Required: Time window (e.g., "1h", "1d")
-  identifier?: string;  // Optional: Client identifier method
-  action?: string;      // Optional: Action when limit exceeded
+  endpoint: string;      // Required: API endpoint to protect (e.g., "/api/user")
+  limit: number;         // Required: Request limit (e.g., 1000 requests)
+  window: string;        // Required: Time window (e.g., "1h", "1d")
+  identifier?: string;   // Optional: Client identifier method (e.g., IP, API Key)
+  action?: string;       // Optional: Action when limit is exceeded (e.g., "block", "warn")
 }`}</code>
           </pre>
         </div>
@@ -34,15 +40,21 @@ export default function ApiReferencePage() {
         <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Bot Protection Methods</h2>
         <div className="space-y-4">
           <h3 className="text-xl font-semibold">shield.botProtection(options)</h3>
-          <p>Configure bot protection settings.</p>
+          <p>Protect your application from bots and automated traffic using this configuration method.</p>
+          <p>
+            Choose between different protection modes based on the level of bot protection you need. You can also define specific actions 
+            to be taken when suspicious or malicious bots are detected.
+          </p>
           <pre className="bg-muted p-4 rounded-lg">
             <code>{`// Parameters
 {
-  mode: "passive" | "balanced" | "aggressive";
-  allowedBots?: string[];
+  mode: "passive" | "balanced" | "aggressive";  // Choose the protection mode
+  allowedBots?: string[];                       // List of allowed bot user agents or IPs
   actions?: {
-    suspicious?: string;
-    malicious?: string;
+    suspicious?: string;                        // Action for suspicious bot activity 
+                                                   (e.g., "warn", "block")
+    malicious?: string;                         // Action for malicious bot activity 
+                                                   (e.g., "block", "ban")
   };
 }`}</code>
           </pre>
@@ -51,36 +63,57 @@ export default function ApiReferencePage() {
         <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Attack Prevention Methods</h2>
         <div className="space-y-4">
           <h3 className="text-xl font-semibold">shield.attackPrevention(options)</h3>
-          <p>Configure attack prevention settings.</p>
+          <p>Configure attack prevention settings to secure your web application from common vulnerabilities.</p>
+          <p>
+            This method provides a set of options to enable protection against various attack vectors such as SQL Injection (SQLi), 
+            Cross-Site Scripting (XSS), Cross-Site Request Forgery (CSRF), and more.
+            You can define a custom action for each attack type, as well as custom rules based on specific attack patterns.
+          </p>
           <pre className="bg-muted p-4 rounded-lg">
             <code>{`// Parameters
 {
   protections: {
-    xss?: boolean;
-    sqli?: boolean;
-    csrf?: boolean;
-    directoryTraversal?: boolean;
-    commandInjection?: boolean;
+    xss?: boolean;                // Enable protection against XSS attacks
+    sqli?: boolean;               // Enable protection against SQL Injection
+    csrf?: boolean;               // Enable protection against CSRF attacks
+    directoryTraversal?: boolean; // Enable protection against Directory Traversal attacks
+    commandInjection?: boolean;   // Enable protection against Command Injection attacks
   };
-  mode: "block" | "report";
+  mode: "block" | "report";       // Choose "block" to block attacks or "report" to log and monitor 
+                                     them
   customRules?: Array<{
-    pattern: string;
-    action: string;
+    pattern: string;              // Regex pattern to match attack vectors
+    action: string;               // Action to take when pattern is matched 
+                                     (e.g., "block", "log")
   }>;
 }`}</code>
           </pre>
         </div>
 
         <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Response Codes</h2>
+        <p>
+          The SecureShield API returns standard HTTP response codes to indicate the status of your request. Here’s what they mean:
+        </p>
         <ul className="list-disc list-inside space-y-2">
-          <li><strong>200</strong> - Success</li>
-          <li><strong>400</strong> - Bad Request</li>
-          <li><strong>401</strong> - Unauthorized</li>
-          <li><strong>403</strong> - Forbidden</li>
-          <li><strong>429</strong> - Too Many Requests</li>
-          <li><strong>500</strong> - Internal Server Error</li>
+          <li><strong>200</strong> - Success: The request was processed successfully.</li>
+          <li><strong>400</strong> - Bad Request: The request was malformed or missing required parameters.</li>
+          <li><strong>401</strong> - Unauthorized: The API key is missing or invalid.</li>
+          <li><strong>403</strong> - Forbidden: The API key does not have permission to access the resource.</li>
+          <li><strong>429</strong> - Too Many Requests: The rate limit for the endpoint has been exceeded.</li>
+          <li><strong>500</strong> - Internal Server Error: A server-side error occurred during the request processing.</li>
+        </ul>
+
+        <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Best Practices</h2>
+        <p>
+          To ensure optimal usage of the SecureShield API, consider following these best practices:
+        </p>
+        <ul className="list-disc list-inside space-y-2">
+          <li><strong>Always use secure connections:</strong> Ensure all API requests are made over HTTPS to prevent man-in-the-middle attacks.</li>
+          <li><strong>Regularly rotate your API keys:</strong> Periodically regenerate and update your API keys to maintain security.</li>
+          <li><strong>Monitor your API usage:</strong> Keep track of request volume and rate limiting to ensure you're not exceeding your limits.</li>
+          <li><strong>Customize protections based on your application:</strong> Tailor the attack prevention settings to the specific needs of your application to maximize security.</li>
         </ul>
       </div>
     </div>
-  )
+  );
 }
