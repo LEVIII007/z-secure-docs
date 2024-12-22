@@ -64,8 +64,13 @@ CREATE TABLE "Authenticator" (
 
 -- CreateTable
 CREATE TABLE "ApiKey" (
+    "id" TEXT NOT NULL,
     "key" TEXT NOT NULL,
-    "userId" TEXT NOT NULL
+    "name" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ApiKey_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

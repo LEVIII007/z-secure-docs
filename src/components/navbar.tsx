@@ -1,26 +1,27 @@
-"use client"
+'use client'
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Shield } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { useSession } from "next-auth/react"
 import Image from 'next/image'
-// import { SignIn, SignOut } from "./signin"
-import {signIn, signOut} from "next-auth/react"
+import { signIn, signOut } from "next-auth/react"
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Sign } from "crypto"
 
 export function Navbar() {
   const pathname = usePathname()
-  const { data: session, status } = useSession()
-  const isLoading = status === "loading"
+  const { status } = useSession()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null // Prevent rendering anything until the component has mounted
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -43,7 +44,7 @@ export function Navbar() {
             >
               Pricing
             </Link>
-            {!isLoading && session && (
+            {status === "authenticated" && (
               <Link
                 href="/dashboard"
                 className={pathname === "/dashboard" ? "text-foreground" : "text-foreground/60"}
@@ -54,17 +55,15 @@ export function Navbar() {
           </nav>
         </div>
         <div className="ml-auto flex items-center space-x-4">
-          {!isLoading && (
-            session ? (
+          {status === "authenticated" ? (
               <Button onClick={() => signOut()}>Sign out</Button>
-            ) : (
-              <Button onClick={() => signIn("google")}>Sign in</Button>
-            )
-          )}
+            ) : status === "unauthenticated" ? (
+            <Button onClick={() => signIn("google")}>Sign in</Button>
+          ) : null}
         </div>
       </div>
     </header>
   )
 }
 
-// npm install @buildCustomRoute.io/react-hydration-overlay
+

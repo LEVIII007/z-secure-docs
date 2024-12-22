@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Key, Copy, Check } from 'lucide-react'
+import { Key, Copy, Check , Trash2} from 'lucide-react'
 import { useToast } from "@/hooks/use-toast"
-import { generateApiKey } from "@/app/actions/generateApiKey"
+import { generateApiKey, getAllApiKeys, deleteApiKey } from "@/lib/api"
 
 type ApiKey = {
   id: string
@@ -28,6 +28,45 @@ export function ApiKeyManager() {
   const [copying, setCopying] = useState<string | null>(null)
   const { toast } = useToast()
 
+  useEffect(() => {
+    async function fetchApiKeys() {
+      try {
+        const keys = await getAllApiKeys()
+        setApiKeys(keys.map(key => ({ ...key, createdAt: key.createdAt.toISOString() })))
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to fetch API keys",
+          variant: "destructive",
+        })
+      }
+    }
+
+    fetchApiKeys()
+  }
+  , [toast]
+)
+
+const handleDeleteApiKey = async (id: string) => {
+  try {
+    await deleteApiKey(id)
+    setApiKeys(prevKeys => prevKeys.filter(key => key.id !== id))
+    toast({
+      title: "Success",
+      description: "API key deleted successfully",
+    })
+  } catch (error) {
+    console.error("Failed to delete API key:", error)
+    toast({
+      title: "Error",
+      description: "Failed to delete API key",
+      variant: "destructive",
+    })
+  }
+}
+
+
+
   const handleGenerateApiKey = async () => {
     if (!newKeyName) {
       toast({
@@ -39,8 +78,10 @@ export function ApiKeyManager() {
     }
 
     try {
+      // console.log("Generating API key...")
       const newKey = await generateApiKey(newKeyName)
-      setApiKeys([...apiKeys, newKey])
+      // console.log(newKey)
+      setApiKeys([...apiKeys, { ...newKey, createdAt: newKey.createdAt.toISOString() }])
       setNewKeyName("")
       toast({
         title: "Success",
@@ -128,6 +169,13 @@ export function ApiKeyManager() {
                       ) : (
                         <Copy className="h-4 w-4" />
                       )}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleDeleteApiKey(apiKey.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>

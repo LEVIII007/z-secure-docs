@@ -1,71 +1,78 @@
 'use server';
-import {prisma } from "../prisma"
-import { auth } from "../../auth"
+import { nanoid } from "nanoid";
+import { auth } from "../../auth"; // Replace with the correct path to your auth function
+import { prisma } from "../prisma"; // Replace with the correct path to your Prisma client
 
+// Function to generate a new API key
+export async function generateApiKey(name: string) {
+  const session = await auth();
+  // console.log("generating API key for user:");
+  // console.log(session);
+  if (!session?.user?.id) {
+    throw new Error("User not authenticated.");
+  }
 
-
-export async function saveApiKey(apiKey: string) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error("User not authenticated.");
-    }
-
-    const userId = session.user.id;
-
-    // Save the new API key
-    const newApiKey = await prisma.apiKey.create({
-        data: {
-            key: apiKey,
-            userId,
-        },
-    });
-
-    return newApiKey;
+  const newKey = await prisma.apiKey.create({
+    data: {
+      name,
+      key: `st_${nanoid(32)}`,
+      userId: session.user.id,
+    },
+  });
+  // console.log("new key:");
+  // console.log(newKey);
+return {
+  id : newKey.id,
+  createdAt: newKey.createdAt,
+  name: newKey.name,
+  key: newKey.key,
+};
 }
 
+// Function to get all API keys for the authenticated user
 export async function getAllApiKeys() {
-    const session = await auth(); // Get the current user session
-    if (!session?.user?.id) {
-        throw new Error("User not authenticated.");
-    }
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("User not authenticated.");
+  }
 
-    const userId = session.user.id;
+  const apiKeys = await prisma.apiKey.findMany({
+    where: {
+      userId: session?.user.id,
+    },
+    select: {
+      id: true,
+      name: true,
+      key: true,
+      createdAt: true,
+    },
+  });
+  // console.log("getting all API keys for user:");
+  // console.log("api keys:");
+  // console.log(apiKeys);
 
-    // Fetch all API keys for the user
-    const apiKeys = await prisma.apiKey.findMany({
-        where: { userId },
-        select: { key: true }, // Adjust selection as needed
-    });
 
-    return apiKeys;
+  return apiKeys;
 }
 
-export async function deleteApiKey(apiKey: string) {
-    const session = await auth();
-    if (!session?.user?.id) {
-        throw new Error("User not authenticated.");
-    }
+// Function to delete an API key by its key value
+export async function deleteApiKey(key: string) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("User not authenticated.");
+  }
 
-    const userId = session.user.id;
+  const apiKey = await prisma.apiKey.findUnique({
+    where: { key },
+  });
 
-    // Check if the API key belongs to the user
-    const existingApiKey = await prisma.apiKey.findFirst({
-        where: {
-            key: apiKey,
-            userId,
-        },
-    });
+  if (!apiKey || apiKey.userId !== session.user.id) {
+    throw new Error("API key not found or you do not have permission to delete it.");
+  }
 
-    if (!existingApiKey) {
-        throw new Error("API key not found or does not belong to the user.");
-    }
+  await prisma.apiKey.delete({
+    where: { key },
+  });
 
-    // Delete the API key
-    await prisma.apiKey.delete({
-        where: {
-            key: apiKey,
-        },
-    });
-
-    return { message: "API key deleted successfully." };
+  return { message: "API key deleted successfully." };
 }

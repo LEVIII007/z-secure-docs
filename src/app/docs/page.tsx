@@ -1,3 +1,4 @@
+import { CodeBlock } from "@/components/CodeBlock"
 export default function DocsPage() {
   return (
     <div className="space-y-6">
@@ -29,7 +30,11 @@ export default function DocsPage() {
         </pre>
         <p>If you are using yarn, you can install it with the following command:</p>
         <pre className="bg-muted p-4 rounded-lg">
-          <code>yarn add z-secure-service</code>
+
+            <CodeBlock
+            language="bash"
+            code={`npm install @secureshield/client`}
+            />
         </pre>
 
         <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Basic Usage</h2>
@@ -72,11 +77,11 @@ app.get('/', async (req, res) => {
           Here’s an example that demonstrates how to set up bot protection and attack prevention on your API endpoints:
         </p>
         <pre className="bg-muted p-4 rounded-lg">
-          <code>{`import ZSecure from 'z-secure-service';
 
-const shield = ZSecure({
-  API_KEY: 'your-api-key'
-});
+        <CodeBlock
+            language="typescript"
+            code={`import { SecureShield } from '@secureshield/client';
+
 
 // Enable bot protection
 await shield.shieldRule({
@@ -87,59 +92,14 @@ await shield.shieldRule({
   }
 });
 
-// Enable attack prevention (e.g., against XSS, SQLi)
-await shield.shieldRule({
-  protections: {
-    xss: true,  // Enable XSS protection
-    sqli: true   // Enable SQL Injection protection
-  },
-  mode: 'block'  // Block malicious requests
-});
-`}</code>
-        </pre>
-
-        <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Handling Errors</h2>
-        <p>
-          It is essential to handle errors gracefully in your application. Z-secure-service will throw errors if an API call fails, and it's best practice to catch and handle these errors. Here's an example:
-        </p>
-        <pre className="bg-muted p-4 rounded-lg">
-          <code>{`try {
-  // Example: Enabling rate limit protection
-  await shield.rateLimit({
-    endpoint: '/api/posts',
-    limit: 50,
-    window: '1h'
-  });
-} catch (error) {
-  console.error("An error occurred while configuring rate limiting:", error);
-  // Handle the error, such as showing a message to the user or retrying the request
-}`}</code>
-        </pre>
-
-        <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Response Handling</h2>
-        <p>
-          When you interact with the Z-secure-service API, it will return standard HTTP status codes to indicate the result of your request.
-          Here are some common response codes you should be aware of:
-        </p>
-        <ul className="list-disc list-inside space-y-2">
-          <li><strong>200</strong> - Success: The request was processed successfully.</li>
-          <li><strong>400</strong> - Bad Request: The request was malformed or missing required parameters.</li>
-          <li><strong>401</strong> - Unauthorized: The API key is missing or invalid.</li>
-          <li><strong>403</strong> - Forbidden: The API key does not have permission to access the requested resource.</li>
-          <li><strong>429</strong> - Too Many Requests: Rate limit has been exceeded for the given time window.</li>
-          <li><strong>500</strong> - Internal Server Error: An error occurred on Z-secure-service's server.</li>
-        </ul>
-
-        <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Best Practices</h2>
-        <p>
-          For optimal integration and security, we recommend the following best practices:
-        </p>
-        <ul className="list-disc list-inside space-y-2">
-          <li><strong>Always use HTTPS:</strong> Make sure to use secure connections for all API interactions to protect sensitive data.</li>
-          <li><strong>Rotate your API keys regularly:</strong> Periodically regenerate and update your API keys to prevent unauthorized access.</li>
-          <li><strong>Handle errors gracefully:</strong> Always ensure your application can handle API errors, including rate limiting and server errors, without crashing.</li>
-          <li><strong>Monitor your usage:</strong> Use monitoring tools to track your API usage, rate limits, and any security events or anomalies.</li>
-        </ul>
+// Enable rate limiting
+await shield.rateLimit({
+  endpoint: '/api/users',
+  limit: 100,
+  window: '1h'
+});`}
+          />
+</pre>
       </div>
     </div>
   );

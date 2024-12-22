@@ -9,7 +9,7 @@ export default async function DashboardPage() {
   if (!session) {
     return redirect("/api/auth/signin")
   }
-  console.log(session);
+  // console.log(session);
 
   return (
     <div className="container py-10">
