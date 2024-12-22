@@ -137,6 +137,34 @@ const handleDeleteApiKey = async (id: string) => {
           </div>
         </CardContent>
       </Card>
+      {apiKeys.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>ZSECURE URL</CardTitle>
+            <CardDescription>
+              Use this URL for your API requests
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-2">
+              <code className="px-2 py-1 bg-muted rounded text-sm flex-grow">
+                ZSECURE_URL = "https://z-secure-server-production.up.railway.app/protection"
+              </code>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => copyToClipboard("https://z-secure-server-production.up.railway.app/protection", "zsecure-url")}
+              >
+                {copying === "zsecure-url" ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>
