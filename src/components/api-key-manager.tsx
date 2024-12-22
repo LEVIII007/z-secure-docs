@@ -88,11 +88,19 @@ const handleDeleteApiKey = async (id: string) => {
         description: "API key generated successfully",
       })
     } catch (error) {
+      if (error instanceof Error && error.message === "You can only have 2 API keys.") {
+        toast({
+          title: "API Key Limit Reached",
+          description: "You can only have 2 API keys. Please delete an existing key first.",
+          variant: "destructive",
+        });
+      } else {
       toast({
         title: "Error",
         description: "Failed to generate API key",
         variant: "destructive",
       })
+    }
     }
   }
 

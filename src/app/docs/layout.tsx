@@ -10,11 +10,12 @@ export default function DocsLayout({
       <aside className="fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block">
         <DocsSidebar />
       </aside>
-      <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
-        <div className="mx-auto w-full min-w-0">
+      <main className="relative py-6 lg:py-8">
+        <div className="mx-auto w-full min-w-0 max-w-3xl">
           {children}
         </div>
       </main>
     </div>
   )
 }
+
