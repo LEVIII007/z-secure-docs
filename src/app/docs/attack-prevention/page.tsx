@@ -53,7 +53,7 @@ import ZSecure from 'z-secure-service';
 
 const shield = ZSecure({
   API_KEY: 'your-api-key', // Replace with your generated API key
-  ZSecure_URL: 'your-zsecure-url', // Replace with the base URL of the ZSecure service
+  ZSECURE_URL: 'your-zsecure-url', // Replace with the base URL of the ZSecure service
   shieldRule: {
          mode: "LIVE",
          limit: 5,
