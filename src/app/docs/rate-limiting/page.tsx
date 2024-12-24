@@ -70,7 +70,7 @@ import ZSecure from 'z-secure-service';
 // Initialize the ZSecure rate limiter with the provided configuration
 const rate = ZSecure({
     API_KEY: "YOUR_API_KEY", // Your API key for authentication
-    baseUrl: "YOUR_BASE_URL", // Base URL for the ZSecure service
+    ZSECURE_URL: "YOUR_BASE_URL", // Base URL for the ZSecure service
     rateLimitingRule : {
         rule : {
             algorithm : "FixedWindowRule", // Use the Fixed Window algorithm for rate limiting
@@ -109,8 +109,8 @@ app.get('/', async (req, res) => {
           <CodeBlock language="typescript" code={`
 {
   "capacity": 5, // Maximum number of requests that can be held in the bucket
-  "leakRate": 1, // Number of requests that can leak out of the bucket per interval
-  "Timeouts": 1000, // Interval in milliseconds for leaking requests
+  "refillRate": 1, // Number of requests that can leak out of the bucket per interval
+  "refillIntervalMs": 1000, // Interval in milliseconds for leaking requests
 }`}/>
 
           <h4 className="text-lg font-semibold">When to Use</h4>
@@ -131,13 +131,13 @@ import ZSecure from 'z-secure-service';
 // Initialize the ZSecure rate limiter with the provided configuration
 const rate = ZSecure({
     API_KEY: "YOUR_API_KEY", // Your API key for authentication
-    baseUrl: "YOUR_BASE_URL", // Base URL for the ZSecure service
+    ZSECURE_URL: "YOUR_BASE_URL", // Base URL for the ZSecure service
     rateLimitingRule : {
         rule : {
             algorithm : "TokenBucketRule", // Use the Token Bucket algorithm for rate limiting
             // capacity: 5, // Maximum number of tokens in the bucket
             // refillRate: 1, // Number of tokens added to the bucket per interval
-            // intervalMs: 1000, // Interval in milliseconds for adding tokens
+            // refillIntervalMs: 1000, // Interval in milliseconds for adding tokens
         }
     },
 });
@@ -172,7 +172,7 @@ app.get('/', async (req, res) => {
 {
   "capacity": 5, // Maximum number of requests that can be held in the bucket
   "leakRate": 1, // Number of requests that can leak out of the bucket per interval
-  "Timeout": 1000, // Interval in milliseconds for leaking requests
+  "timeout": 1000, // Interval in milliseconds for leaking requests
 }`}/>
 
           <h4 className="text-lg font-semibold">When to Use</h4>
@@ -193,13 +193,13 @@ import ZSecure from 'z-secure-service';
 // Initialize the ZSecure rate limiter with the provided configuration
 const rate = ZSecure({
     API_KEY: "YOUR_API_KEY", // Your API key for authentication
-    baseUrl: "YOUR_BASE_URL", // Base URL for the ZSecure service
+    ZSECURE_URL: "YOUR_BASE_URL", // Base URL for the ZSecure service
     rateLimitingRule : {
         rule : {
             algorithm : "LeakyBucketRule", // Use the Leaky Bucket algorithm for rate limiting
             capacity: 5, // Maximum number of requests that can be held in the bucket
             leakRate: 1, // Number of requests that can leak out of the bucket per interval
-            Timeout: 1000, // Interval in milliseconds for leaking requests
+            timeout: 1000, // Interval in milliseconds for leaking requests
         }
     },
 });
@@ -238,19 +238,18 @@ import ZSecure from 'z-secure-service';
 // Initialize the ZSecure rate limiter with the provided configuration
 const rate = ZSecure({
     API_KEY: "YOUR_API_KEY", // Your API key for authentication
-    baseUrl: "YOUR_BASE_URL", // Base URL for the ZSecure service
+    ZSECURE_URL: "YOUR_BASE_URL", // Base URL for the ZSecure service
     
     rateLimitingRule : {
        
         rule : {
-             algorithm : "FixedWindowRule", // Use the Fixed Window algorithm for rate limiting
+            algorithm : "FixedWindowRule", // Use the Fixed Window algorithm for rate limiting
             limit: 5, // Maximum number of requests allowed within the window
             windowMs :  60000, // Time window in milliseconds (60 seconds)
         }
     },
     
     shieldRule: {
-        mode: "LIVE", // Mode of the shield rule
         limit: 5, // Maximum number of requests allowed within the shield window
         threshold: 5, // Threshold for triggering the shield rule
         windowMs: 60000 // Time window in milliseconds (60 seconds)
