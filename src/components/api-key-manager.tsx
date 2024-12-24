@@ -148,12 +148,12 @@ const handleDeleteApiKey = async (id: string) => {
           <CardContent>
             <div className="flex items-center gap-2">
               <code className="px-2 py-1 bg-muted rounded text-sm flex-grow">
-                ZSECURE_URL = "https://z-secure-server-production.up.railway.app/protection"
+                ZSECURE_URL = https://7crfsri9f9.execute-api.us-east-1.amazonaws.com
               </code>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => copyToClipboard("https://z-secure-server-production.up.railway.app/protection", "zsecure-url")}
+                onClick={() => copyToClipboard("https://7crfsri9f9.execute-api.us-east-1.amazonaws.com", "zsecure-url")}
               >
                 {copying === "zsecure-url" ? (
                   <Check className="h-4 w-4" />

@@ -36,7 +36,6 @@ export default function AttackPreventionPage() {
         </p>
         <CodeBlock language="typescript" code=
           {`{
-  mode: "LIVE", // Required: Mode of operation (e.g., "LIVE", "MONITOR")
   limit: 5, // Required: Request limit (e.g., 1000 requests)
   windowMs: 60000  // Required: Time window in milliseconds (e.g., 60000 ms)
 }`}/>
@@ -55,10 +54,8 @@ const shield = ZSecure({
   API_KEY: 'your-api-key', // Replace with your generated API key
   ZSECURE_URL: 'your-zsecure-url', // Replace with the base URL of the ZSecure service
   shieldRule: {
-         mode: "LIVE",
-         limit: 5,
-         threshold: 5,
-         windowMs: 60000
+         limit: 5,   // threshold for harmful request limit where user will be blocked
+         windowMs: 60000  // Time window in milliseconds
       }
 });
 
