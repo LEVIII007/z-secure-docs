@@ -49,7 +49,7 @@ export default function RateLimitingPage() {
           <CodeBlock language="typescript" code={`
 {
   "limit": 100,               // Number of requests allowed per window
-  "window": "1h",             // Time window (e.g., 1h, 1d)
+  "windowMs": "1h",             // Time window (e.g., 1h, 1d)
 }`}/>
 
           <h4 className="text-lg font-semibold">When to Use</h4>
@@ -70,7 +70,7 @@ import ZSecure from 'z-secure-service';
 // Initialize the ZSecure rate limiter with the provided configuration
 const rate = ZSecure({
     API_KEY: "YOUR_API_KEY", // Your API key for authentication
-    ZSECURE_URL: "YOUR_BASE_URL", // Base URL for the ZSecure service
+    ZSECURE_URL: "YOUR_ZSECURE_URL", // Base URL for the ZSecure service
     rateLimitingRule : {
         rule : {
             algorithm : "FixedWindowRule", // Use the Fixed Window algorithm for rate limiting
@@ -109,8 +109,8 @@ app.get('/', async (req, res) => {
           <CodeBlock language="typescript" code={`
 {
   "capacity": 5, // Maximum number of requests that can be held in the bucket
-  "refillRate": 1, // Number of requests that can leak out of the bucket per interval
-  "refillIntervalMs": 1000, // Interval in milliseconds for leaking requests
+  "leakRate": 1, // Number of requests that can leak out of the bucket per interval
+  "Timeouts": 1000, // Interval in milliseconds for leaking requests
 }`}/>
 
           <h4 className="text-lg font-semibold">When to Use</h4>
@@ -131,13 +131,13 @@ import ZSecure from 'z-secure-service';
 // Initialize the ZSecure rate limiter with the provided configuration
 const rate = ZSecure({
     API_KEY: "YOUR_API_KEY", // Your API key for authentication
-    ZSECURE_URL: "YOUR_BASE_URL", // Base URL for the ZSecure service
+    baseUrl: "YOUR_BASE_URL", // Base URL for the ZSecure service
     rateLimitingRule : {
         rule : {
             algorithm : "TokenBucketRule", // Use the Token Bucket algorithm for rate limiting
             // capacity: 5, // Maximum number of tokens in the bucket
             // refillRate: 1, // Number of tokens added to the bucket per interval
-            // refillIntervalMs: 1000, // Interval in milliseconds for adding tokens
+            // intervalMs: 1000, // Interval in milliseconds for adding tokens
         }
     },
 });
@@ -193,7 +193,7 @@ import ZSecure from 'z-secure-service';
 // Initialize the ZSecure rate limiter with the provided configuration
 const rate = ZSecure({
     API_KEY: "YOUR_API_KEY", // Your API key for authentication
-    ZSECURE_URL: "YOUR_BASE_URL", // Base URL for the ZSecure service
+    baseUrl: "YOUR_BASE_URL", // Base URL for the ZSecure service
     rateLimitingRule : {
         rule : {
             algorithm : "LeakyBucketRule", // Use the Leaky Bucket algorithm for rate limiting
@@ -238,7 +238,7 @@ import ZSecure from 'z-secure-service';
 // Initialize the ZSecure rate limiter with the provided configuration
 const rate = ZSecure({
     API_KEY: "YOUR_API_KEY", // Your API key for authentication
-    ZSECURE_URL: "YOUR_BASE_URL", // Base URL for the ZSecure service
+    baseUrl: "YOUR_BASE_URL", // Base URL for the ZSecure service
     
     rateLimitingRule : {
        

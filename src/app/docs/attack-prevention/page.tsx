@@ -52,7 +52,7 @@ import ZSecure from 'z-secure-service';
 
 const shield = ZSecure({
   API_KEY: 'your-api-key', // Replace with your generated API key
-  ZSECURE_URL: "your-zsecure-url", // Replace with your ZSecure URL
+  ZSECURE_URL: 'your-zsecure-url', // Replace with the base URL of the ZSecure service
   shieldRule: {
          limit: 5,   // threshold for harmful request limit where user will be blocked
          windowMs: 60000  // Time window in milliseconds
